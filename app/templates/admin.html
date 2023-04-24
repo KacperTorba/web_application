@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+{% block title_icon %}
+
+    <title>Admin</title>
+    <link rel="icon" href="{{url_for('static',filename='images/login.png')}}">
+
+{% endblock %}
+
+{% block body_content %}
+
+
+
+<div class="container-fluid">
+<div class="row">
+<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-body-tertiary sidebar collapse">
+  <div class="position-sticky pt-3 sidebar-sticky">
+    <ul class="nav flex-column">
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="#">
+          <span data-feather="home" class="align-text-bottom"></span>
+          Dashboard
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <span data-feather="file" class="align-text-bottom"></span>
+          Orders
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <span data-feather="shopping-cart" class="align-text-bottom"></span>
+          Products
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <span data-feather="users" class="align-text-bottom"></span>
+          Customers
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <span data-feather="bar-chart-2" class="align-text-bottom"></span>
+          Reports
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <span data-feather="layers" class="align-text-bottom"></span>
+          Integrations
+        </a>
+      </li>
+    </ul>
+
+    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-body-secondary text-uppercase">
+      <span>Saved reports</span>
+      <a class="link-secondary" href="#" aria-label="Add a new report">
+        <span data-feather="plus-circle" class="align-text-bottom"></span>
+      </a>
+    </h6>
+    <ul class="nav flex-column mb-2">
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <span data-feather="file-text" class="align-text-bottom"></span>
+          Current month
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <span data-feather="file-text" class="align-text-bottom"></span>
+          Last quarter
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <span data-feather="file-text" class="align-text-bottom"></span>
+          Social engagement
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <span data-feather="file-text" class="align-text-bottom"></span>
+          Year-end sale
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Dashboard</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+      <div class="btn-group me-2">
+        <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+        <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+      </div>
+      <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+        <span data-feather="calendar" class="align-text-bottom"></span>
+        This week
+      </button>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped table-sm">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">E-mail</th>
+          <th scope="col">First Name</th>
+          <th scope="col">Last Name</th>
+          <th scope="col">Is admin</th>
+          <th scope="col">Reg date</th>
+          <th scope="col">Options</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        
+        {% for user in users %}
+        <tr>
+          <td>{{user.id}}</td>
+          <td>{{user.mail}}</td>
+          <td>{{user.first_name}}</td>
+          <td>{{user.last_name}}</td>
+          <td>{{user.is_admin}}</td>
+          <td>{{user.reg_date}}</td>
+          <td>
+
+          </td>
+        </tr>
+        {% endfor %}
+        <form class="form-signin" method ='POST'></form>
+        {{ form.csrf_token }}
+        <tr>
+          <td></td>
+          <td>{{ form.mail(class_="form-control", placeholder="E-mail") }}</td>
+          <td>{{ form.first_name(class_="form-control", placeholder="First name") }}</td>
+          <td>{{ form.last_name(class_="form-control", placeholder="Last name") }}</td>
+          <td><div class="d-inline-flex p-2">{{ form.is_admin(class_="form-check-input d-flex justify-content-center") }}</div></td>
+          <td></td>
+          <td>
+            <button class="btn btn-outline-success btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">Add</button>
+          </td>
+        </tr>
+
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add new user</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+
+              {% for message in get_flashed_messages() %}
+              <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <strong>{{ message }}</strong> 
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              {% endfor %}
+
+
+
+              <div class="modal-body mb-2">
+               If you want to add new user, enter new password...
+               {{ form.password(class_="form-control mb-2", placeholder="Password")}}
+               {{ form.confirm(class_="form-control mb-2", placeholder="Repeat password")}}
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Add new user</button></form>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+
+        
+        
+      </tbody>
+    </table>
+  </div>
+</main>
+</div>
+</div>
+
+{% endblock %}
+ 
