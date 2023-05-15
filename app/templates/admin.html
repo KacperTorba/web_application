@@ -128,21 +128,71 @@
           <td>{{user.is_admin}}</td>
           <td>{{user.reg_date}}</td>
           <td>
+            {% if current_user.mail != user.mail %}
+            <button type="button" class="btn btn-outline-warning btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Edit</button>
 
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit {{user.mail}}</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+
+                    <form method="POST" id="edit_user">
+                      <div class="mb-3">
+                        <label class="form-label">Email address</label>
+                        <input type="email" class="form-control"   value='{{user.mail}}'>
+                        <label class="form-label">First name</label>
+                        <input type="text" class="form-control"   value='{{user.first_name}}'>
+                        <label class="form-label">Last name</label>
+                        <input type="text" class="form-control"   value='{{user.last_name}}'>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control">
+                      </div>
+                      <div id="emailHelp" class="form-text">Default password: <b>{{form.password.default}}</b></div><br>
+                      <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" value='{{user.is_admin}}'>
+                        <label class="form-check-label" for="exampleCheck1">Admin</label>
+                      </div>
+
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-warning">Edit user</button></form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <a href= "{{ url_for('home', id = user.id)}}" class="btn btn-outline-danger btn-sm">Del</a>             
+            </div>
+            {% endif %}
           </td>
         </tr>
         {% endfor %}
-        <form class="form-signin" method ='POST'></form>
+
+
+        <form class="form-signin" method ='POST' id="add_user">
         {{ form.csrf_token }}
         <tr>
           <td></td>
           <td>{{ form.mail(class_="form-control", placeholder="E-mail") }}</td>
           <td>{{ form.first_name(class_="form-control", placeholder="First name") }}</td>
           <td>{{ form.last_name(class_="form-control", placeholder="Last name") }}</td>
-          <td><div class="d-inline-flex p-2">{{ form.is_admin(class_="form-check-input d-flex justify-content-center") }}</div></td>
+          <td>
+            <div class="d-inline-flex p-2">{{ form.is_admin(class_="form-check-input d-flex justify-content-center")}}              
+            </div>
+          </td>
           <td></td>
           <td>
-            <button class="btn btn-outline-success btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">Add</button>
+            <div class="d-inline-flex p-2">
+            <button class="btn btn-success btn-sm d-flex justify-content-center" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">Add</button>
+            </div>
           </td>
         </tr>
 
@@ -154,20 +204,8 @@
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Add new user</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
-
-              {% for message in get_flashed_messages() %}
-              <div class="alert alert-warning alert-dismissible fade show" role="alert">
-              <strong>{{ message }}</strong> 
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-              </div>
-              {% endfor %}
-
-
-
               <div class="modal-body mb-2">
-               If you want to add new user, enter new password...
-               {{ form.password(class_="form-control mb-2", placeholder="Password")}}
-               {{ form.confirm(class_="form-control mb-2", placeholder="Repeat password")}}
+               Default password for new user : <b> {{form.password.default}} </b>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -176,10 +214,6 @@
             </div>
           </div>
         </div>
-      
-
-        
-        
       </tbody>
     </table>
   </div>

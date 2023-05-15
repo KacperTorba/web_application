@@ -19,7 +19,7 @@ class User(db.Model, UserMixin):
     reg_date = db.Column(db.DateTime,default=datetime.utcnow)
 
     def __repr__(self):
-        return ('User: {},{}'.format(self.id, self.name))
+        return ('User: {},{}'.format(self.id, self.mail))
 
     def get_hashed_password(password):
         """Hash a password for storing."""
@@ -44,14 +44,20 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     remember = BooleanField('Remember me')
 
-class NewUserForm(FlaskForm):
+class NewUserByAdmin(FlaskForm):
     mail = EmailField('E-mail',validators=[DataRequired(),Email()])
-    password = PasswordField('Password', validators=[InputRequired(), EqualTo('confirm', message='Passwords must match')])
-    confirm = PasswordField('Repeat Password')
+    password = PasswordField('Password', validators=[DataRequired()], default='0000')
+    first_name = StringField('First Name',validators=[DataRequired()])
+    last_name = StringField('Last Name',validators=[DataRequired()])
+    is_admin = BooleanField('Is Admin')
+    
+    
+class Registration(FlaskForm):
+    mail = EmailField('E-mail',validators=[DataRequired(),Email()])
+    password = PasswordField('New password', validators=[DataRequired(), EqualTo('confirm', message='Passwords must match')])
+    confirm = PasswordField ('Repeat Password')
     first_name = StringField('First Name')
     last_name = StringField('Last Name')
-    is_admin = BooleanField('Is Admin')
-
 
 
 def is_safe_url(target):
