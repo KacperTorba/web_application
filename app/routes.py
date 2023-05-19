@@ -34,9 +34,7 @@ def login():
 @app.route('/dashboard', methods=['GET','POST'])
 def dashboard():
     users = User().query.all()
-    form = NewUserByAdmin()
-    h = request.form.get(edit_user)
-    print(h)
+    form = NewUserByAdmin()    
 
     if form.validate_on_submit():
         mail = User.query.filter(User.mail == form.mail.data).first()
@@ -50,47 +48,23 @@ def dashboard():
     
         flash('User already exists')
         
-        
-    user = User.query.filter(User.id == id).first()
-    print(user)
-    
-    if request.method=='POST' and user != None:
-        print(user)
-        user.mail = form.mail.data
-        user.password = form.password.data or form.password.default
-        user.first_name = form.first_name.data
-        user.last_name = form.last_name.data
-        user.is_admin = form.is_admin.data
-        
-        db.session.add(user)
-        db.session.commit() 
-    
-        flash('Update completed!')       
-        
-    
-    return redirect(url_for('dashboard')) 
-        
-        
-        
     return render_template('admin.html', users=users, form=form)
 
 @app.route('/dashboard/edit/<int:id>', methods=['POST'])
 def edit_user(id):
     form = NewUserByAdmin()
     user = User.query.filter(User.id == id).first()
-    print(user)
     
-    if request.method=='POST' and user != None:
-        print(user)
-        user.mail = form.mail.data
-        user.password = form.password.data or form.password.default
+    if request.method=='POST' and user != None:        
+        user.mail = form.mail.data 
+        user.password = form.password.data
         user.first_name = form.first_name.data
         user.last_name = form.last_name.data
         user.is_admin = form.is_admin.data
         
         db.session.add(user)
-        db.session.commit() 
-    
+        db.session.commit()
+            
         flash('Update completed!')       
         
     
@@ -98,12 +72,11 @@ def edit_user(id):
 
 @app.route('/dashboard/delete/<int:id>')
 def delete_user(id):
+    user_to_del = User.query.filter(User.id == id).first()
+    db.session.delete(user_to_del)
+    db.session.commit()
     
-    
-    return render_template('admin.html')
-
-
-
+    return redirect(url_for('dashboard'))
 
 
 
