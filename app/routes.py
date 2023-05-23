@@ -22,6 +22,7 @@ serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 
 
 
+
 @app.route('/')
 def home():
     path_exist = exists('./app/data/user.db')
@@ -41,9 +42,7 @@ def home():
         
     return render_template('base.html')
 
-    
-    
-
+  
 @app.route('/login', methods=['GET','POST'])
 def login():
     form = LoginForm() 
@@ -181,7 +180,7 @@ def new_token(email):
       
         
     
- 
+  
  
 @app.route('/docs')
 @login_required
