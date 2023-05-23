@@ -3,7 +3,7 @@ from flask_login import UserMixin
 from flask_wtf import FlaskForm
 from flask import request
 from wtforms import BooleanField, EmailField, PasswordField, StringField
-from wtforms.validators import DataRequired, Email, InputRequired,EqualTo
+from wtforms.validators import DataRequired, Email, Length, EqualTo
 from datetime import datetime
 import hashlib
 import binascii
@@ -17,6 +17,7 @@ class User(db.Model, UserMixin):
     last_name = db.Column(db.String(50))
     is_admin = db.Column(db.Boolean, default= 0)
     reg_date = db.Column(db.DateTime,default=datetime.utcnow)
+    confirmed = db.Column(db.Boolean, default= 0)
 
     def __repr__(self):
         return ('User: {},{}'.format(self.id, self.mail))
@@ -54,8 +55,8 @@ class NewUserByAdmin(FlaskForm):
     
 class Registration(FlaskForm):
     mail = EmailField('E-mail',validators=[DataRequired(),Email()])
-    password = PasswordField('New password', validators=[DataRequired(), EqualTo('confirm', message='Passwords must match')])
-    confirm = PasswordField ('Repeat Password')
+    password = PasswordField('New password', validators= [DataRequired(), EqualTo('confirm', message='Passwords must match'),Length(min=6, max=15)])
+    confirm = PasswordField ('Repeat Password',validators=(Length(min=6, max=15), DataRequired()))
     first_name = StringField('First Name')
     last_name = StringField('Last Name')
 

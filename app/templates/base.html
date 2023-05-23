@@ -27,16 +27,8 @@
           
           {% if current_user.is_authenticated and current_user.is_admin %}
   
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Dropdown
-            </a>            
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="{{url_for('dashboard')}}">List of users</a></li>
-              <li><a class="dropdown-item" href="#">...</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">...</a></li>
-            </ul>
+          <li><a href="{{url_for('dashboard')}}" class="nav-link px-2 text-white">ADD/EDIT users</a></li>
+
             {% endif %}
           </li>
           
@@ -50,7 +42,7 @@
         <div class="text-end">
           {% if not current_user.is_authenticated %}
           <a button type="button" href="{{url_for('login')}}" class="btn btn-outline-light me-2">Sign in</button></a>
-          <a button type="button" href="#" class="btn btn-warning">Sign up</button></a>
+          <a button type="button" href="{{url_for('registration')}}" class="btn btn-warning">Sign up</button></a>
           {% endif %}
           {% if current_user.is_authenticated %}
           <a button type="button" href="{{url_for('logout')}}" class="btn btn-outline-danger me-0 btn-sm">Logout: {{current_user.first_name}}</button></a>
@@ -73,6 +65,12 @@
 </div>
 {% endfor %}
 
+{% if current_user.is_authenticated and current_user.confirmed != True %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>Please confirm your e-mail! </strong>
+  <a href="{{ url_for('new_token', email = current_user.mail)}}" class="btn btn-sm btn-danger">Send new token</a>
+  </div>
+{% endif %}
 
 <body>
 <!-- Body content -->

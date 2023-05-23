@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title_icon %}
+
+    <title>Sign In</title>
+    <link rel="icon" href="{{url_for('static',filename='images/login.png')}}">
+
+{% endblock %}
+
+{% block body_content %}
+
+<div class="text-center bg-light ">
+  <!--Grid row-->
+  <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
+    <!--Grid column-->
+    <div class="col-md-2">
+
+      <form class="form-signin" method = 'POST'>
+        {{ form.csrf_token }}
+
+        
+        <img class="mb-4" src="{{url_for('static',filename='images/login.png')}}" alt="" width="72" height="72">
+        <h1 class="h3 mb-4 font-weight-normal">Please sign up</h1>
+        {{ form.mail(class_="form-control mb-2", placeholder="E-mail") }}
+        {{ form.first_name(class_="form-control mb-2", placeholder="First name") }}
+        {{ form.last_name(class_="form-control mb-2", placeholder="Last name") }}
+        {{ form.password(class_="form-control mb-2", placeholder="Password") }}
+        {{ form.confirm(class_="form-control mb-2", placeholder="Repeat password") }}
+        {% if form.password.errors %}
+            <ul class="errors">
+                {% for error in form.password.errors %}
+                    <li><b>{{ error }}</li></b>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <button class="btn btn-lg btn-primary" type="submit">Sign up</button> 
+      </form>
+    </div>
+    <!--Grid column-->
+  </div>
+  <!--Grid row-->
+</div>
+
+{% endblock %}
+ 
